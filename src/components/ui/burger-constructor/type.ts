@@ -1,3 +1,4 @@
+import { TNewOrder } from '@api';
 import { TOrder } from '@utils-types';
 
 export type BurgerConstructorUIProps = {
