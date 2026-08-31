@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { orderBurgerApi, TNewOrder } from '@api';
+import { orderBurgerApi } from '@api';
 
 //ЗАКАЗ
 

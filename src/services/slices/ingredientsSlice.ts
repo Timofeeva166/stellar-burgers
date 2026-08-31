@@ -51,6 +51,8 @@ const ingredientsSlice = createSlice({
       state.ingredients.filter((item) => item.type === 'main'),
     selectSauces: (state) =>
       state.ingredients.filter((item) => item.type === 'sauce'),
+    selectIngredientById: (state, id: string) =>
+      state.ingredients.find((item) => item._id === id) || null,
     selectisLoading: (state) => state.isIngredientsLoading,
     selectError: (state) => state.error
   }

@@ -137,7 +137,7 @@ const userSlice = createSlice({
   selectors: {
     selectUser: (state) => state.user,
     selectIsAuthenticated: (state) => state.isAuthenticated,
-    selectIsLoading: (state) => state.isUserLoading,
+    selectIsUserLoading: (state) => state.isUserLoading,
     selectError: (state) => state.error,
     selectUserName: (state) => state.user?.name || '',
     selectUserEmail: (state) => state.user?.email || ''
