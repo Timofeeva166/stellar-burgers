@@ -36,9 +36,9 @@ const burgerConstructorSlice = createSlice({
     },
     removeIngredient: (state, action: PayloadAction<string>) => {
       state.constructorItems.ingredients =
-        state.constructorItems.ingredients.filter((ingredient) => {
-          ingredient.id !== action.payload;
-        });
+        state.constructorItems.ingredients.filter(
+          (ingredient) => ingredient.id !== action.payload
+        );
     },
     moveIngredient: (
       state,
