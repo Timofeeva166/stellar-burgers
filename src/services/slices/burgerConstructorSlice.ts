@@ -51,6 +51,10 @@ const burgerConstructorSlice = createSlice({
         1
       );
       state.constructorItems.ingredients.splice(toIndex, 0, movedItem);
+    },
+    clearConstructor: (state) => {
+      state.constructorItems.ingredients = [];
+      state.constructorItems.bun = null;
     }
   },
   selectors: {
@@ -61,8 +65,12 @@ const burgerConstructorSlice = createSlice({
   }
 });
 
-export const { addIngredient, removeIngredient, moveIngredient } =
-  burgerConstructorSlice.actions;
+export const {
+  addIngredient,
+  removeIngredient,
+  moveIngredient,
+  clearConstructor
+} = burgerConstructorSlice.actions;
 
 export const burgerConstructorSelectors = burgerConstructorSlice.selectors;
 export default burgerConstructorSlice.reducer;
