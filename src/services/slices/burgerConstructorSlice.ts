@@ -51,32 +51,18 @@ const burgerConstructorSlice = createSlice({
         1
       );
       state.constructorItems.ingredients.splice(toIndex, 0, movedItem);
-    },
-    clearConstructor: (state) => {
-      state.constructorItems.ingredients = [];
-      state.constructorItems.bun = null;
     }
   },
   selectors: {
     selectConstructor: (state) => ({
       bun: state.constructorItems.bun,
       ingredients: state.constructorItems.ingredients
-    }),
-    selectIngredientsAmount: (state) =>
-      state.constructorItems.ingredients.length,
-    selectHasBun: (state) => state.constructorItems.bun !== null,
-    selectIsEmpty: (state) =>
-      state.constructorItems.bun === null &&
-      state.constructorItems.ingredients.length === 0
+    })
   }
 });
 
-export const {
-  addIngredient,
-  removeIngredient,
-  moveIngredient,
-  clearConstructor
-} = burgerConstructorSlice.actions;
+export const { addIngredient, removeIngredient, moveIngredient } =
+  burgerConstructorSlice.actions;
 
 export const burgerConstructorSelectors = burgerConstructorSlice.selectors;
 export default burgerConstructorSlice.reducer;

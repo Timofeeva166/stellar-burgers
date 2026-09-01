@@ -11,13 +11,13 @@ import {
   NotFound404
 } from '@pages';
 import { ProtectedRoute } from './protected-route/protected-route';
-import { IngredientDetails } from '@components';
+import { IngredientDetails, OrderInfo, Modal } from '@components';
 
 export const authRoutes: RouteObject[] = [
   {
     path: '/profile',
     element: (
-      <ProtectedRoute authenticated>
+      <ProtectedRoute onlyForAuthUser>
         <Profile />
       </ProtectedRoute>
     )
@@ -25,8 +25,16 @@ export const authRoutes: RouteObject[] = [
   {
     path: '/profile/orders',
     element: (
-      <ProtectedRoute authenticated>
+      <ProtectedRoute onlyForAuthUser>
         <ProfileOrders />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/profile/orders/:number',
+    element: (
+      <ProtectedRoute onlyForAuthUser>
+        <OrderInfo />
       </ProtectedRoute>
     )
   }
@@ -36,7 +44,7 @@ export const unAuthRoutes: RouteObject[] = [
   {
     path: '/login',
     element: (
-      <ProtectedRoute authenticated={false}>
+      <ProtectedRoute onlyForAuthUser={false}>
         <Login />
       </ProtectedRoute>
     )
@@ -44,7 +52,7 @@ export const unAuthRoutes: RouteObject[] = [
   {
     path: '/register',
     element: (
-      <ProtectedRoute authenticated={false}>
+      <ProtectedRoute onlyForAuthUser={false}>
         <Register />
       </ProtectedRoute>
     )
@@ -52,7 +60,7 @@ export const unAuthRoutes: RouteObject[] = [
   {
     path: '/forgot-password',
     element: (
-      <ProtectedRoute authenticated={false}>
+      <ProtectedRoute onlyForAuthUser={false}>
         <ForgotPassword />
       </ProtectedRoute>
     )
@@ -60,9 +68,36 @@ export const unAuthRoutes: RouteObject[] = [
   {
     path: '/reset-password',
     element: (
-      <ProtectedRoute authenticated={false}>
+      <ProtectedRoute onlyForAuthUser={false}>
         <ResetPassword />
       </ProtectedRoute>
+    )
+  }
+];
+
+export const modalRoutes: RouteObject[] = [
+  {
+    path: '/ingredients/:id',
+    element: (
+      <Modal title='Детали ингредиента' onClose={() => window.history.back()}>
+        <IngredientDetails />
+      </Modal>
+    )
+  },
+  {
+    path: '/feed/:number',
+    element: (
+      <Modal title='Детали заказа' onClose={() => window.history.back()}>
+        <OrderInfo />
+      </Modal>
+    )
+  },
+  {
+    path: '/profile/orders/:number',
+    element: (
+      <Modal title='Детали заказа' onClose={() => window.history.back()}>
+        <OrderInfo />
+      </Modal>
     )
   }
 ];
@@ -79,6 +114,10 @@ export const publicRoutes: RouteObject[] = [
   {
     path: '/ingredients/:id',
     element: <IngredientDetails />
+  },
+  {
+    path: '/feed/:number',
+    element: <OrderInfo />
   }
 ];
 

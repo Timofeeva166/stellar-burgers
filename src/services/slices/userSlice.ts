@@ -78,6 +78,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //ЛОГИН
       .addCase(loginUser.pending, (state) => {
         state.isUserLoading = true;
         state.error = null;
@@ -89,8 +90,10 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isUserLoading = false;
+        state.isAuthenticated = false;
         state.error = action.error.message || 'Ошибка входа';
       })
+      //РЕГИСТРАЦИЯ
       .addCase(registerUser.pending, (state) => {
         state.isUserLoading = true;
         state.error = null;
@@ -102,8 +105,10 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isUserLoading = false;
+        state.isAuthenticated = false;
         state.error = action.error.message || 'Ошибка регистрации';
       })
+      //ПОЛУЧИТЬ ЮЗЕРА
       .addCase(getUser.pending, (state) => {
         state.isUserLoading = true;
         state.error = null;
@@ -113,10 +118,13 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(getUser.rejected, (state) => {
+      .addCase(getUser.rejected, (state, action) => {
         state.isUserLoading = false;
         state.isAuthenticated = false;
+        state.error =
+          action.error.message || 'Ошибка получения данных пользователя';
       })
+      //ОБНОВИТЬ ДАННЫЕ ЮЗЕРА
       .addCase(updateUser.pending, (state) => {
         state.isUserLoading = true;
         state.error = null;
@@ -129,9 +137,19 @@ const userSlice = createSlice({
         state.isUserLoading = false;
         state.error = action.error.message || 'Ошибка обновления';
       })
+      //ВЫХОД
+      .addCase(logoutUser.pending, (state) => {
+        state.isUserLoading = true;
+        state.error = null;
+      })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
+        state.isUserLoading = false;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isUserLoading = false;
+        state.error = action.error.message || 'Ошибка выхода';
       });
   },
   selectors: {

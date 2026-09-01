@@ -43,8 +43,7 @@ const ordersSlice = createSlice({
   selectors: {
     selectOrders: (state) => state.orders,
     selectIsLoading: (state) => state.isOrdersLoading,
-    selectError: (state) => state.error,
-    selectOrdersCount: (state) => state.orders.length
+    selectError: (state) => state.error
   }
 });
 

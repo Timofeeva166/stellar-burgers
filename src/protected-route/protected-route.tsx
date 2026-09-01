@@ -1,48 +1,37 @@
 import React, { ReactElement } from 'react';
 import { useSelector } from '../services/store';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { userSelectors } from '../services/slices/userSlice';
 import { Preloader } from '@ui';
 
 interface ProtectedRouteProps {
-  authenticated: boolean;
+  onlyForAuthUser: boolean;
   children: ReactElement;
 }
 
 export const ProtectedRoute = ({
-  authenticated = true,
+  onlyForAuthUser: onlyForAuthUser = true,
   children
 }: ProtectedRouteProps) => {
   const location = useLocation();
-  const navigate = useNavigate();
-
   const isAuthenticated = useSelector(userSelectors.selectIsAuthenticated);
   const isUserLoading = useSelector(userSelectors.selectIsUserLoading);
-
-  const from = location.state?.from || '/';
 
   if (isUserLoading) {
     return <Preloader />;
   }
 
-  if (authenticated) {
-    if (!isAuthenticated) {
-      navigate('/login', {
-        state: { from: location },
-        replace: true
-      });
-    }
-    return children ? <>{children}</> : <Outlet />;
+  if (!onlyForAuthUser && isAuthenticated) {
+    //если авторизованный пользователь пытается зайти на страницы для неавторизованных, направляем на конструктор
+    return <Navigate to='/' replace />;
   }
 
-  if (!authenticated) {
-    if (isAuthenticated) {
-      navigate(from, { replace: true });
-      return null;
-    }
-    return children ? <>{children}</> : <Outlet />;
+  if (onlyForAuthUser && !isAuthenticated) {
+    //если неавторизованный пользователь пытается зайти на страницы для авторизованных, его перекидывает на логин
+    return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
+  //в ином случае рендерим контент
   return children ? <>{children}</> : <Outlet />;
 };
 

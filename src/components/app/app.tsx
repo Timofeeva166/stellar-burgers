@@ -6,9 +6,8 @@ import { ingredientsSelectors } from '../../services/slices/ingredientsSlice';
 import { getUser } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
 import { AppHeader } from '@components';
-import { routes } from '../../routes';
+import { routes, modalRoutes } from '../../routes';
 import styles from './app.module.css';
-import { Modal, IngredientDetails, OrderInfo } from '@components';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -16,46 +15,19 @@ const AppRoutes = () => {
 
   return (
     <>
+      {/* Основные */}
       <Routes location={background || location}>
         {routes.map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
       </Routes>
+
+      {/* Модалки */}
       {background && (
         <Routes>
-          <Route
-            path='/ingredients/:id'
-            element={
-              <Modal
-                title='Детали ингредиента'
-                onClose={() => window.history.back()}
-              >
-                <IngredientDetails />
-              </Modal>
-            }
-          />
-          <Route
-            path='/feed/:number'
-            element={
-              <Modal
-                title='Детали заказа'
-                onClose={() => window.history.back()}
-              >
-                <OrderInfo />
-              </Modal>
-            }
-          />
-          <Route
-            path='/profile/orders/:number'
-            element={
-              <Modal
-                title='Детали заказа'
-                onClose={() => window.history.back()}
-              >
-                <OrderInfo />
-              </Modal>
-            }
-          />
+          {modalRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
         </Routes>
       )}
     </>
