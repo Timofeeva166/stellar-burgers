@@ -19,10 +19,6 @@ export const Login: FC = () => {
     dispatch(loginUser({ email, password }));
   };
 
-  if (isAuthenticated) {
-    navigate('/', { replace: true });
-  }
-
   return (
     <LoginUI
       errorText={error || ''}

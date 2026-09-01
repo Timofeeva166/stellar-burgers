@@ -106,7 +106,7 @@ type TOwner = {
   updatedAt: string;
 };
 
-export type TNewOrder = {
+type TNewOrder = {
   _id: string;
   status: string;
   name: string;

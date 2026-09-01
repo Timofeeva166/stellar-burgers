@@ -22,10 +22,6 @@ export const Register: FC = () => {
     );
   };
 
-  if (isAuthenticated) {
-    navigate('/', { replace: true });
-  }
-
   return (
     <RegisterUI
       errorText=''
