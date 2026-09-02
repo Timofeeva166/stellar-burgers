@@ -7,7 +7,9 @@ import { getUser } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
 import { AppHeader } from '@components';
 import { routes, modalRoutes } from '../../routes';
+import '../../index.css';
 import styles from './app.module.css';
+import { getCookie } from '../../utils/cookie';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -42,7 +44,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    dispatch(getUser());
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      dispatch(getUser());
+    }
   }, [dispatch]);
 
   return (
