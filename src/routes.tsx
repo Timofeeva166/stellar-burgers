@@ -12,6 +12,7 @@ import {
 } from '@pages';
 import { ProtectedRoute } from './protected-route/protected-route';
 import { IngredientDetails, OrderInfo, Modal } from '@components';
+import { IngredientDetailsWrapper } from './components/ingredient-details-wrapper';
 
 export const authRoutes: RouteObject[] = [
   {
@@ -95,9 +96,11 @@ export const modalRoutes: RouteObject[] = [
   {
     path: '/profile/orders/:number',
     element: (
-      <Modal title='Детали заказа' onClose={() => window.history.back()}>
-        <OrderInfo />
-      </Modal>
+      <ProtectedRoute onlyForAuthUser>
+        <Modal title='Детали заказа' onClose={() => window.history.back()}>
+          <OrderInfo />
+        </Modal>
+      </ProtectedRoute>
     )
   }
 ];
@@ -113,7 +116,7 @@ export const publicRoutes: RouteObject[] = [
   },
   {
     path: '/ingredients/:id',
-    element: <IngredientDetails />
+    element: <IngredientDetailsWrapper />
   },
   {
     path: '/feed/:number',

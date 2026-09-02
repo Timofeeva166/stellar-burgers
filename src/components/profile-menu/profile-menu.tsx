@@ -18,6 +18,7 @@ export const ProfileMenu: FC = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser())
+      .unwrap()
       .then(() => navigate('/login', { replace: true }))
       .catch((err) => {
         console.error(err);

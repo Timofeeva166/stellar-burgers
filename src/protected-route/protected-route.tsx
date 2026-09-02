@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { useSelector } from '../services/store';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { userSelectors } from '../services/slices/userSlice';
