@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
 import { Tab } from '@zlden/react-developer-burger-ui-components';
+
 import styles from './burger-ingredients.module.css';
 import { BurgerIngredientsUIProps } from './type';
 import { IngredientsCategory } from '@components';
