@@ -22,13 +22,11 @@ export const ProtectedRoute = ({
   }
 
   if (!onlyForAuthUser && isAuthenticated) {
-    //если авторизованный пользователь пытается зайти на страницы для неавторизованных, направляем на конструктор
     const from = location.state?.from?.pathname || '/';
     return <Navigate to={from} replace />;
   }
 
   if (onlyForAuthUser && !isAuthenticated) {
-    //если неавторизованный пользователь пытается зайти на страницы для авторизованных, его перекидывает на логин
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
