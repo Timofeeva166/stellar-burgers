@@ -1,33 +1,56 @@
-import { ConstructorPage } from '@pages';
-import '../../index.css';
-import styles from './app.module.css';
-
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { getUser } from '../../services/slices/userSlice';
 import { AppHeader } from '@components';
-import { Preloader } from '@ui';
+import { routes, modalRoutes } from '../../routes';
+import styles from './app.module.css';
+import { getCookie } from '../../utils/cookie';
 
-const App = () => {
-  /** TODO: взять переменные из стора */
-  const isIngredientsLoading = false;
-  const ingredients = [];
-  const error = null;
+const AppRoutes = () => {
+  const location = useLocation();
+  const background = location.state?.background;
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      {isIngredientsLoading ? (
-        <Preloader />
-      ) : error ? (
-        <div className={`${styles.error} text text_type_main-medium pt-4`}>
-          {error}
-        </div>
-      ) : ingredients.length > 0 ? (
-        <ConstructorPage />
-      ) : (
-        <div className={`${styles.title} text text_type_main-medium pt-4`}>
-          Нет игредиентов
-        </div>
+    <>
+      {/* Основные */}
+      <Routes location={background || location}>
+        {routes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
+      </Routes>
+
+      {/* Модалки */}
+      {background && (
+        <Routes>
+          {modalRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
       )}
-    </div>
+    </>
+  );
+};
+
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      dispatch(getUser());
+    }
+  }, [dispatch]);
+
+  return (
+    <BrowserRouter>
+      <div className={styles.app}>
+        <AppHeader />
+        <AppRoutes />
+      </div>
+    </BrowserRouter>
   );
 };
 
