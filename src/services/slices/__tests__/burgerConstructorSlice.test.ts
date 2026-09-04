@@ -4,7 +4,6 @@ import constructorSliceReducer, {
   removeIngredient,
   moveIngredient,
   clearConstructor,
-  burgerConstructorSelectors,
   initialState
 } from '../burgerConstructorSlice';
 import { TIngredient } from '@utils-types';

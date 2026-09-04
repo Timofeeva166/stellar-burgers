@@ -31,6 +31,20 @@ test.describe('Тесты конструктора бургеров', () => {
       await expect(modal).toContainText('Детали ингредиента');
     });
 
+    test('Отображение правильных данных ингредиента в модалке', async ({
+      page
+    }) => {
+      await openIngredientModal(page, 'bun');
+      const modal = page.locator('[data-testid="modal"]');
+      await expect(modal).toBeVisible();
+
+      await expect(modal).toContainText('Краторная булка N-200i');
+      await expect(modal).toContainText('420');
+      await expect(modal).toContainText('80');
+      await expect(modal).toContainText('24');
+      await expect(modal).toContainText('53');
+    });
+
     test('Закрытие модального окна по крестику', async ({ page }) => {
       await openIngredientModal(page, 'bun');
       const modal = page.locator('[data-testid="modal"]');
