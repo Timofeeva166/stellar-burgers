@@ -12,7 +12,7 @@ import {
   makeOrder,
   expectConstructorEmpty,
   setupMocks
-} from '../helpers/helpers';
+} from '../tests/helpers/helpers';
 
 test.describe('Тесты конструктора бургеров', () => {
   test.describe('Взаимодействие с модальными окнами', () => {
