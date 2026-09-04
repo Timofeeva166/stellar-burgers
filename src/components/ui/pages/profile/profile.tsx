@@ -21,6 +21,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
     </div>
     <form
       className={`mt-30 ${styles.form} ${commonStyles.form}`}
+      data-testid='profile-form'
       onSubmit={handleSubmit}
     >
       <>
