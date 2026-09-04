@@ -24,7 +24,9 @@ export const ConstructorPage: FC = () => {
   if (error) {
     return (
       <main className={styles.containerMain}>
-        <div className={`text text_type_main-medium pt-4`}>{error}</div>
+        <div data-testid='error' className={`text text_type_main-medium pt-4`}>
+          {error}
+        </div>
       </main>
     );
   }
