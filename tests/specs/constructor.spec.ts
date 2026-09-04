@@ -55,7 +55,7 @@ test.describe('Тесты конструктора бургеров', () => {
       await waitForIngredientsList(page);
     });
 
-    test('Добавить булку', async ({ page }) => {
+    test('Добавить булку в конструктор', async ({ page }) => {
       await addBun(page);
       const bunTop = page.locator('[data-testid="constructor-bun-top"]');
       await expect(bunTop).toBeVisible();
@@ -63,13 +63,13 @@ test.describe('Тесты конструктора бургеров', () => {
       await expect(bunBottom).toBeVisible();
     });
 
-    test('Добавить начинку', async ({ page }) => {
+    test('Добавить начинку в конструктор', async ({ page }) => {
       await addMain(page);
       const ingredient = page.locator('[data-testid="constructor-ingredient"]');
       await expect(ingredient).toBeVisible();
     });
 
-    test('Добавить соус', async ({ page }) => {
+    test('Добавить соус в конструктор', async ({ page }) => {
       await addSauce(page);
       const ingredient = page.locator('[data-testid="constructor-ingredient"]');
       await expect(ingredient).toBeVisible();
@@ -91,7 +91,8 @@ test.describe('Тесты конструктора бургеров', () => {
       ).toHaveCount(2);
     });
   });
-  test.describe('Создание заказа', () => {
+
+  test.describe('Взаимодействие с заказом', () => {
     test.beforeEach(async ({ page }) => {
       await setupMocks(page);
       await setAuthTokens(page);
@@ -99,7 +100,7 @@ test.describe('Тесты конструктора бургеров', () => {
       await page.waitForSelector('[data-testid="burger-ingredients"]');
     });
 
-    test('Создать заказ', async ({ page }) => {
+    test('Создание заказа', async ({ page }) => {
       await addBun(page);
       await addMain(page);
       await addSauce(page);
@@ -113,7 +114,7 @@ test.describe('Тесты конструктора бургеров', () => {
       expect(orderNumber).toMatch(/\d+/);
     });
 
-    test('Конструктор очищается', async ({ page }) => {
+    test('Очистка конструктора', async ({ page }) => {
       await addBun(page);
       await addMain(page);
       await addSauce(page);

@@ -10,7 +10,7 @@ interface IIngredientsState {
   error: string | undefined;
 }
 
-const initialState: IIngredientsState = {
+export const initialState: IIngredientsState = {
   ingredients: [],
   isIngredientsLoading: false,
   error: undefined

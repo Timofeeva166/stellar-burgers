@@ -7,7 +7,7 @@ test.describe('Генерация HAR-файлов', () => {
   test('мокирование ингредиетов', async ({ page }) => {
     await page.routeFromHAR('./tests/hars/ingredients.har', {
       url: '**/api/ingredients',
-      update: true
+      update: false
     });
 
     await page.goto('/');
