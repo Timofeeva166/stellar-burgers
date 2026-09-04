@@ -1,13 +1,13 @@
 import { describe, test, expect } from '@jest/globals';
 import ingredientsSliceReducer, {
   fetchIngredients,
-  ingredientsSelectors,
   initialState
 } from '../ingredientsSlice';
 import { TIngredient } from '@utils-types';
-import { store } from '../../store';
-import { getIngredientsApi } from '../../../utils/burger-api';
+import { configureStore } from '@reduxjs/toolkit';
+import * as burgerApi from '../../../utils/burger-api';
 
+// МОКОВЫЕ ДАННЫЕ
 const mockIngredients: TIngredient[] = [
   {
     _id: '643d69a5c3f7b9001cfa093c',
@@ -206,20 +206,124 @@ const mockIngredients: TIngredient[] = [
   }
 ];
 
+// ТЕСТОВЫЙ STORE
+const createTestStore = () => {
+  return configureStore({
+    reducer: {
+      ingredients: ingredientsSliceReducer
+    }
+  });
+};
+
 describe('Тесты ingredientsSlice', () => {
-  describe('асинхронный экшен fetchIngredients', () => {
-    test('тест загрузки ингредиентов', async () => {
+  test('Возвращает initialState при неизвестном экшене', () => {
+    const newState = ingredientsSliceReducer(undefined, {
+      type: 'UNKNOWN_ACTION'
+    });
+    expect(newState).toEqual(initialState);
+  });
+
+  describe('fetchIngredients', () => {
+    test('Состояние pending', () => {
+      // экшен pending
+      const action = {
+        type: fetchIngredients.pending.type
+      };
+
+      // Применяем редьюсер
+      const newState = ingredientsSliceReducer(initialState, action);
+
+      // Проверяем
+      expect(newState.isIngredientsLoading).toBe(true);
+      expect(newState.error).toBeUndefined();
+      expect(newState.ingredients).toEqual([]);
+    });
+
+    test('Состояние fulfilled', () => {
+      // экшен fulfilled с моковыми данными
+      const action = {
+        type: fetchIngredients.fulfilled.type,
+        payload: mockIngredients
+      };
+
+      const newState = ingredientsSliceReducer(initialState, action);
+
+      expect(newState.isIngredientsLoading).toBe(false);
+      expect(newState.ingredients).toEqual(mockIngredients);
+      expect(newState.error).toBeUndefined();
+    });
+
+    test('Состояние rejected', () => {
+      const errorMessage = 'Ошибка загрузки ингредиентов';
+      // экшен rejected с ошибкой
+      const action = {
+        type: fetchIngredients.rejected.type,
+        error: { message: errorMessage }
+      };
+
+      const newState = ingredientsSliceReducer(initialState, action);
+
+      expect(newState.isIngredientsLoading).toBe(false);
+      expect(newState.ingredients).toEqual([]);
+      expect(newState.error).toBe(errorMessage);
+    });
+
+    test('Переход из pending в fulfilled', () => {
+      // Состояние с активной загрузкой
+      const loadingState = {
+        ...initialState,
+        isIngredientsLoading: true,
+        error: undefined
+      };
+
+      const action = {
+        type: fetchIngredients.fulfilled.type,
+        payload: mockIngredients
+      };
+
+      const newState = ingredientsSliceReducer(loadingState, action);
+
+      // Проверяем, что перешел в состояние fulfilled
+      expect(newState.isIngredientsLoading).toBe(false);
+      expect(newState.ingredients).toEqual(mockIngredients);
+      expect(newState.error).toBeUndefined();
+    });
+
+    test('Переход из pending в rejected', () => {
+      const loadingState = {
+        ...initialState,
+        isIngredientsLoading: true,
+        error: undefined
+      };
+
+      const action = {
+        type: fetchIngredients.rejected.type,
+        error: { message: 'Ошибка сервера' }
+      };
+
+      const newState = ingredientsSliceReducer(loadingState, action);
+
+      expect(newState.isIngredientsLoading).toBe(false);
+      expect(newState.ingredients).toEqual([]);
+      expect(newState.error).toBe('Ошибка сервера');
+    });
+
+    test('тест загрузки ингредиентов с моками', async () => {
       const getIngredientsSpy = jest
-        .spyOn({ getIngredientsApi }, 'getIngredientsApi')
+        .spyOn(burgerApi, 'getIngredientsApi')
         .mockResolvedValue(mockIngredients);
 
-      await store.dispatch(fetchIngredients());
+      const testStore = createTestStore();
 
-      const { ingredients } = store.getState().ingredients;
+      await testStore.dispatch(fetchIngredients());
+
+      const { ingredients } = testStore.getState().ingredients;
 
       expect(ingredients).toEqual(mockIngredients);
-
       expect(getIngredientsSpy).toHaveBeenCalledTimes(1);
+
+      // очистка мока
+      getIngredientsSpy.mockRestore();
     });
   });
 });

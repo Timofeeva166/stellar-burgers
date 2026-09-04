@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   user: userReducer // Пользователь
 });
 
-export const store = configureStore({
+const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production'
 });

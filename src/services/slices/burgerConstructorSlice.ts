@@ -11,7 +11,7 @@ interface IBurgerConstructorState {
   };
 }
 
-const initialState: IBurgerConstructorState = {
+export const initialState: IBurgerConstructorState = {
   constructorItems: {
     bun: null,
     ingredients: []
